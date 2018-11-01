@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.100.134:3306/yutest?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: 1qaz@WSX
+  session:
+    store-type: none
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+#security:
+  #basic:
+    #enabled: false
