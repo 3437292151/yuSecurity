@@ -11,6 +11,14 @@
 
     <artifactId>yu-security-core</artifactId>
     <dependencies>
+
+        <!-- lombok依赖 start-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-oauth2</artifactId>

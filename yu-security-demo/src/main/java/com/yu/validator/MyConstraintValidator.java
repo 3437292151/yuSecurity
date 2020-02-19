@@ -12,9 +12,13 @@ import javax.validation.ConstraintValidatorContext;
  */
 @Slf4j
 public class MyConstraintValidator implements ConstraintValidator<MyConstraint, Object> {
+
+    private String type;
+
     @Override
     public void initialize(MyConstraint constraintAnnotation) {
         log.info("MyConstraintValidator initialize");
+        Class<?>[] groups = constraintAnnotation.groups();
     }
 
     @Override

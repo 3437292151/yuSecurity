@@ -11,3 +11,9 @@ spring:
 #security:
   #basic:
     #enabled: false
+
+yu:
+  security:
+    browser:
+      loginPage: /demo-login.html
+      loginType: JSON
