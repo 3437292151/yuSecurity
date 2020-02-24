@@ -40,7 +40,7 @@ public class YuAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
         if (securityProperties.getBrowser().getLoginType().equals(LoginType.JSON)){
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(objectMapper.writeValueAsString(exception));
+            response.getWriter().write(objectMapper.writeValueAsString(exception.getMessage()));
             return;
         }
         super.onAuthenticationFailure(request, response, exception);

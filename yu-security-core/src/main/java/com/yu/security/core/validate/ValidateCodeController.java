@@ -1,14 +1,16 @@
 package com.yu.security.core.validate;
 
-import com.yu.security.core.validate.service.ValidateCodeService;
+import com.yu.security.core.validate.service.ValidateCodeGenerate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @Auther: yuchanglong
@@ -20,11 +22,12 @@ public class ValidateCodeController {
 
     Logger log = LoggerFactory.getLogger(getClass());
 
-    private ValidateCodeService validateCodeService;
+    @Autowired
+    private ValidateCodeGenerate validateCodeGenerate;
 
     @GetMapping("/code/image")
-    public void getImageCode(HttpServletRequest request, HttpServletResponse response){
+    public void getImageCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         log.info("创建验证码图片！！！！");
-        validateCodeService.createCode(new ServletWebRequest(request, response));
+        validateCodeGenerate.createCode(new ServletWebRequest(request, response));
     }
 }

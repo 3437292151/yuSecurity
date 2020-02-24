@@ -15,5 +15,8 @@ spring:
 yu:
   security:
     browser:
-      loginPage: /demo-login.html
+      #loginPage: /demo-login.html
       loginType: JSON
+    code:
+      image:
+        urls: /api/user

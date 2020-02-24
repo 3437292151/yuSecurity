@@ -1,6 +1,7 @@
 package com.yu.security.core.properties;
 
 import lombok.Data;
+import org.apache.commons.lang.Validate;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -13,5 +14,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class SecurityProperties {
 
     private BrowserProperties browser = new BrowserProperties();
+
+    private ValidateCodeProperties code = new ValidateCodeProperties();
 
 }
