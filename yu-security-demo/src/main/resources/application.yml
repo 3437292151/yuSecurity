@@ -17,6 +17,7 @@ yu:
     browser:
       #loginPage: /demo-login.html
       loginType: JSON
-    code:
-      image:
-        urls: /api/user
+      rememberMeSeconds: 60
+    #code:
+      #image:
+        #urls: /api/user

@@ -1,13 +1,12 @@
-package com.yu.security.core.validate.service.impl;
+package com.yu.security.core.validate.image;
 
 import com.yu.security.core.properties.SecurityProperties;
-import com.yu.security.core.validate.ImageCode;
-import com.yu.security.core.validate.service.ValidateCodeGenerate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import com.yu.security.core.validate.image.ImageCode;
+import com.yu.security.core.validate.ValidateCodeGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
@@ -22,28 +21,25 @@ import java.util.Random;
  * @Date: 2020-2-19
  * @Description: 图片验证码生成器
  */
-@Component
-@ConditionalOnMissingBean(name = "imageCodeGenerate")
-public class ImageCodeGenerate implements ValidateCodeGenerate {
 
-    private final static String SESSION_KEY = "SESSION_KEY_IMAGE_CODE";
+public class ImageCodeGenerator implements ValidateCodeGenerator {
+
+    Logger log = LoggerFactory.getLogger(getClass());
 
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 
-    @Autowired
     private SecurityProperties securityProperties;
 
-    @Override
-    public void createCode(ServletWebRequest servletWebRequest) throws IOException {
-
-        ImageCode imageCode = generate(servletWebRequest);
-
-        sessionStrategy.setAttribute(servletWebRequest, SESSION_KEY, imageCode);
-
-        ImageIO.write(imageCode.getImage(), securityProperties.getCode().getImage().getFormatName(), servletWebRequest.getResponse().getOutputStream());
+    public SecurityProperties getSecurityProperties() {
+        return securityProperties;
     }
 
-    private ImageCode generate(ServletWebRequest request) {
+    public void setSecurityProperties(SecurityProperties securityProperties) {
+        this.securityProperties = securityProperties;
+    }
+
+    @Override
+    public ImageCode generate(ServletWebRequest request) {
 
         int width = ServletRequestUtils.getIntParameter(request.getRequest(), "width", securityProperties.getCode().getImage().getWidth());
         int height = ServletRequestUtils.getIntParameter(request.getRequest(), "height", securityProperties.getCode().getImage().getHeight());

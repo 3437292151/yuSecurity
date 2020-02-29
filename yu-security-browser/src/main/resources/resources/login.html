@@ -21,7 +21,7 @@
 				<td>图形验证码:</td>
 				<td>
 					<input type="text" name="imageCode">
-					<img src="/code/image?width=200">
+					<img src="/code/image?width=70">
 				</td>
 			</tr>
 			<tr>
@@ -44,7 +44,7 @@
 				<td>短信验证码:</td>
 				<td>
 					<input type="text" name="smsCode">
-					<a href="/code/sms?mobile=13012345678">发送验证码</a>
+					<a href=""  onclick= "getCode()">发送验证码</a>
 				</td>
 			</tr>
 			<tr>
@@ -58,4 +58,29 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;
 	<a href="/qqLogin/weixin">微信登录</a>
 </body>
+<script>
+
+	function getCode() {
+		var xhr = getXmlHttp();
+		xhr.open("get","/code/sms?mobile=13012345678")
+        xhr.send(null);
+        xhr.onreadystatechange = function(){
+            if(xhr.status == 200 && xhr.readyState == 4){
+                console.log(xhr.responseText);
+            }
+        }
+    }
+	function getXmlHttp(){
+        var xmlhttp;
+        if (window.XMLHttpRequest)
+        {
+            xmlhttp=new XMLHttpRequest();
+        }
+        else
+        {
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+	}
+
+</script>
 </html>

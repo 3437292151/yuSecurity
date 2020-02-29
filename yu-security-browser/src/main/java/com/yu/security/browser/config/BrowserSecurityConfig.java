@@ -1,17 +1,20 @@
 package com.yu.security.browser.config;
 
-import com.yu.security.browser.anthentication.YuAuthenticationFailureHandler;
-import com.yu.security.browser.anthentication.YuAuthenticationSuccessHandler;
+
+import com.yu.security.core.authentication.AbstractCoreSecurityConfig;
+import com.yu.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.yu.security.core.properties.SecurityConstants;
 import com.yu.security.core.properties.SecurityProperties;
+import com.yu.security.core.validate.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
-import javax.servlet.Filter;
+import javax.sql.DataSource;
 
 /**
  * @Auther: yuchanglong
@@ -19,31 +22,54 @@ import javax.servlet.Filter;
  * @Description:
  */
 @Configuration
-public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
+public class BrowserSecurityConfig extends AbstractCoreSecurityConfig {
 
     @Autowired
     private SecurityProperties securityProperties;
 
     @Autowired
-    private Filter validateCodeFilter;
+    private DataSource dataSource;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private ValidateCodeSecurityConfig validateCodeSecurityConfig;
+
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository (){
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        //tokenRepository.setCreateTableOnStartup(true);
+        return tokenRepository;
+    }
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-
-       http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
-               .formLogin()
-        //http.httpBasic()
-               .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
-               .loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)
+        applyPasswordAuthenticationConfig(http);
+        http
+            .apply(validateCodeSecurityConfig)
                 .and()
-                .authorizeRequests()
-               .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+            .apply(smsCodeAuthenticationSecurityConfig)
+                .and()
+            .rememberMe()
+                .tokenRepository(persistentTokenRepository ())
+                .userDetailsService(userDetailsService)
+                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+                .and()
+            .authorizeRequests()
+                .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+                        SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
                        securityProperties.getBrowser().getLoginPage(),
-                       "/code/image")
-               .permitAll()
+                       SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
-               .and().csrf().disable();
+                .and()
+            .csrf().disable();
 
     }
 

@@ -1,4 +1,4 @@
-package com.yu.security.core.validate.service;
+package com.yu.security.core.validate;
 
 import org.springframework.web.context.request.ServletWebRequest;
 
@@ -9,7 +9,7 @@ import java.io.IOException;
  * @Date: 2020-2-19
  * @Description: 验证码生成器
  */
-public interface ValidateCodeGenerate {
+public interface ValidateCodeGenerator {
 
-    void createCode(ServletWebRequest servletWebRequest) throws IOException;
+    ValidateCode generate(ServletWebRequest servletWebRequest);
 }
