@@ -15,9 +15,13 @@ spring:
 yu:
   security:
     browser:
-      #loginPage: /demo-login.html
+      loginPage: /demo-login.html
       loginType: JSON
       rememberMeSeconds: 60
     #code:
       #image:
         #urls: /api/user
+    social:
+      qq:
+        appId: wxd99431bbff8305a0
+        appSecret: 60f78681d063590a469f1b297feff3c4

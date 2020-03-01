@@ -11,8 +11,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
 
@@ -39,12 +42,20 @@ public class BrowserSecurityConfig extends AbstractCoreSecurityConfig {
     @Autowired
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
+    @Autowired
+    private SpringSocialConfigurer yuSpringSocialConfigurer;
+
     @Bean
     public PersistentTokenRepository persistentTokenRepository (){
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
         tokenRepository.setDataSource(dataSource);
         //tokenRepository.setCreateTableOnStartup(true);
         return tokenRepository;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -54,6 +65,8 @@ public class BrowserSecurityConfig extends AbstractCoreSecurityConfig {
             .apply(validateCodeSecurityConfig)
                 .and()
             .apply(smsCodeAuthenticationSecurityConfig)
+                .and()
+            .apply(yuSpringSocialConfigurer)
                 .and()
             .rememberMe()
                 .tokenRepository(persistentTokenRepository ())

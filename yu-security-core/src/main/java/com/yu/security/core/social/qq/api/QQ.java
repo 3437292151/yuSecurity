@@ -8,5 +8,5 @@ import java.io.IOException;
  * @Description QQ
  */
 public interface QQ {
-    QQUserInfo getUserInfo() throws IOException;
+    QQUserInfo getUserInfo();
 }
