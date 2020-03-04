@@ -11,7 +11,6 @@ spring:
 #security:
   #basic:
     #enabled: false
-
 yu:
   security:
     browser:
@@ -23,5 +22,9 @@ yu:
         #urls: /api/user
     social:
       qq:
-        appId: wxd99431bbff8305a0
-        appSecret: 60f78681d063590a469f1b297feff3c4
+        appId: 101854065
+        appSecret: 5c6ca8cdd129e3c3612f0a3aeeb224e3
+        providerId: callBack
+      filterProcessesUrl: /qqLogin
+server:
+  port: 80

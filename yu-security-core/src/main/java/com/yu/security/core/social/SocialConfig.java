@@ -27,9 +27,10 @@ public class SocialConfig extends SocialConfigurerAdapter {
         return new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
     }
 
-    @Bean
+    /*@Bean
     public SpringSocialConfigurer yuSpringSocialConfigurer (){
-        return new SpringSocialConfigurer();
-    }
+        YuSpringSocialConfigurer springSocialConfigurer = new YuSpringSocialConfigurer();
+        return springSocialConfigurer;
+    }*/
 
 }
