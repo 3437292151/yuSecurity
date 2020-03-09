@@ -2,8 +2,9 @@ package com.yu.security.core.social.qq.connet;
 
 import com.yu.security.core.social.qq.api.QQ;
 import com.yu.security.core.social.qq.api.impl.QQImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.social.oauth2.AbstractOAuth2ServiceProvider;
-import org.springframework.social.oauth2.OAuth2Template;
 
 /**
  * @Author yuchl
@@ -11,6 +12,8 @@ import org.springframework.social.oauth2.OAuth2Template;
  * @Description
  */
 public class QQOAuth2ServiceProvider extends AbstractOAuth2ServiceProvider<QQ> {
+
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     private static final String URL_AUTHORIZEURL = "https://graph.qq.com/oauth2.0/authorize";
 
@@ -22,8 +25,8 @@ public class QQOAuth2ServiceProvider extends AbstractOAuth2ServiceProvider<QQ> {
      * Create a new {@link AbstractOAuth2ServiceProvider}.
      */
     public QQOAuth2ServiceProvider(String appId, String clientSecret) {
-
-        super(new OAuth2Template(appId, clientSecret, URL_AUTHORIZEURL, URL_ACCESS_TOKEN));
+        super(new YuOAuth2Template(appId, clientSecret, URL_AUTHORIZEURL, URL_ACCESS_TOKEN));
+        log.info("appId:{} , clientSecret: {}", appId, clientSecret);
         this.appId = appId;
     }
 

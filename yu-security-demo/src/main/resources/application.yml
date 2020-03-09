@@ -22,8 +22,8 @@ yu:
         #urls: /api/user
     social:
       qq:
-        appId: 101854065
-        appSecret: 5c6ca8cdd129e3c3612f0a3aeeb224e3
+        appId: 101858876
+        appSecret: f0d7402da2b4ccbbf35abe073a347f7f
         providerId: callBack
       filterProcessesUrl: /qqLogin
 server:

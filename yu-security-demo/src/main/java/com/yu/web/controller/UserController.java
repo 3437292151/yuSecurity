@@ -6,12 +6,16 @@ import com.yu.beans.dto.UserQueryCondition;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.ServletWebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +24,18 @@ import java.util.List;
  * Created by dell on 2018-7-17.
  */
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 @Slf4j
 public class UserController {
+
+    @Autowired
+    private ProviderSignInUtils providerSignInUtils;
+
+    @PostMapping("/regist")
+    public void userRegist(HttpServletRequest request, UserDTO user){
+        log.info("user: {}", user);
+        providerSignInUtils.doPostSignUp(user.getUsername(), new ServletWebRequest(request));
+    }
 
     @GetMapping
     public List<UserDTO> queryAllUser(){

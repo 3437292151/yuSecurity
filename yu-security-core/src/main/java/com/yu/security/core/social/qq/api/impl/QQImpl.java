@@ -1,12 +1,11 @@
 package com.yu.security.core.social.qq.api.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yu.security.core.social.qq.api.QQ;
 import com.yu.security.core.social.qq.api.QQUserInfo;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.social.oauth2.AbstractOAuth2ApiBinding;
 import org.springframework.social.oauth2.TokenStrategy;
 
@@ -34,6 +33,8 @@ public class QQImpl extends AbstractOAuth2ApiBinding implements QQ {
     public QQImpl(String accessToken, String appid) {
         super(accessToken, TokenStrategy.ACCESS_TOKEN_PARAMETER);
 
+        log.info("accessToken: {}, appid:{}", accessToken, appid);
+
         String openidUrl = String.format(URL_GET_OPENID, accessToken);
 
         String openIdResult = getRestTemplate().getForObject(openidUrl, String.class);
@@ -55,7 +56,7 @@ public class QQImpl extends AbstractOAuth2ApiBinding implements QQ {
         try {
             qqUserInfo = objectMapper.readValue(userInfoResult, QQUserInfo.class);
             qqUserInfo.setOpenId(openid);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException("获取用户信息异常", e);
         }
         return qqUserInfo;

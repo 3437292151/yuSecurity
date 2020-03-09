@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Processes an authentication form submission. Called
- * {@code AuthenticationProcessingFilter} prior to Spring Security 3.0.
+ * {@code AuthenticationProcessingFilter} prior to Spring security 3.0.
  * <p>
  * Login forms must present two parameters to this filter: a username and password. The
  * default parameter names to use are contained in the static fields

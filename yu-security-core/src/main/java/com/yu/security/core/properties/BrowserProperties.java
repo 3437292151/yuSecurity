@@ -16,4 +16,6 @@ public class BrowserProperties {
 
     private Integer rememberMeSeconds = 3600*24*7;
 
+    private String signupUrl = "/signUp.html";
+
 }
