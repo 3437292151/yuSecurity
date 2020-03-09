@@ -1,4 +1,4 @@
-package com.yu.security.core.social.qq.connet;
+package com.yu.security.core.social.qq.connect;
 
 import com.yu.security.core.social.qq.api.QQ;
 import com.yu.security.core.social.qq.api.impl.QQImpl;
@@ -25,7 +25,7 @@ public class QQOAuth2ServiceProvider extends AbstractOAuth2ServiceProvider<QQ> {
      * Create a new {@link AbstractOAuth2ServiceProvider}.
      */
     public QQOAuth2ServiceProvider(String appId, String clientSecret) {
-        super(new YuOAuth2Template(appId, clientSecret, URL_AUTHORIZEURL, URL_ACCESS_TOKEN));
+        super(new QQOAuth2Template(appId, clientSecret, URL_AUTHORIZEURL, URL_ACCESS_TOKEN));
         log.info("appId:{} , clientSecret: {}", appId, clientSecret);
         this.appId = appId;
     }

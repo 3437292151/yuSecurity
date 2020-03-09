@@ -1,7 +1,7 @@
-package com.yu.security.core.social.qq.config;
+package com.yu.security.core.social.weixin.config;
 
-import com.yu.security.core.properties.QQProperties;
 import com.yu.security.core.properties.SecurityProperties;
+import com.yu.security.core.properties.WeiXinProperties;
 import com.yu.security.core.social.qq.connect.QQOAuth2ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.social.connect.ConnectionFactory;
 
 @Configuration
-@ConditionalOnProperty(prefix = "yu.security.social.qq", name = "appId")
-public class QQAutoConfig extends SocialAutoConfigurerAdapter {
+@ConditionalOnProperty(prefix = "yu.security.social.weixin", name = "appId")
+public class WeiXinAutoConfig extends SocialAutoConfigurerAdapter {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -23,8 +23,8 @@ public class QQAutoConfig extends SocialAutoConfigurerAdapter {
     @Override
     protected ConnectionFactory<?> createConnectionFactory() {
 
-        QQProperties qq = securityProperties.getSocial().getQq();
-        log.info("ProviderId:{}, AppId:{} ,AppSecret: {}", qq.getProviderId(), qq.getAppId(), qq.getAppSecret() );
-        return new QQOAuth2ConnectionFactory(qq.getProviderId(), qq.getAppId(), qq.getAppSecret());
+        WeiXinProperties weixin = securityProperties.getSocial().getWeixin();
+        log.info("ProviderId:{}, AppId:{} ,AppSecret: {}", weixin.getProviderId(), weixin.getAppId(), weixin.getAppSecret() );
+        return new QQOAuth2ConnectionFactory(weixin.getProviderId(), weixin.getAppId(), weixin.getAppSecret());
     }
 }
