@@ -21,7 +21,7 @@ public class WeiXinImpl extends AbstractOAuth2ApiBinding implements WeiXin {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    private static final String URL_GET_USER_INFO = "https://api.weixin.qq.com/sns/userinfo?access_token=%S&openid=%S&lang=zh_CN";
+    private static final String URL_GET_USER_INFO = "https://api.weixin.qq.com/sns/userinfo?openid=%S&lang=zh_CN";
 
     private String appid;
 
@@ -35,13 +35,16 @@ public class WeiXinImpl extends AbstractOAuth2ApiBinding implements WeiXin {
     @Override
     public WeiXinUserInfo getUserInfo(String openId) {
 
-        String userInfoUrl = String.format(URL_GET_USER_INFO, appid, openId);
+        String userInfoUrl = String.format(URL_GET_USER_INFO, openId);
 
         String userInfoResult = getRestTemplate().getForObject(userInfoUrl, String.class);
         log.info("userInfoResult: {}", userInfoResult);
         WeiXinUserInfo qqUserInfo = null;
         try {
             qqUserInfo = objectMapper.readValue(userInfoResult, WeiXinUserInfo.class);
+            if (StringUtils.isNotBlank(qqUserInfo.getErrcode())){
+                throw new RuntimeException("获取用户信息异常");
+            }
             qqUserInfo.setOpenid(openId);
         } catch (IOException e) {
             throw new RuntimeException("获取用户信息异常", e);
