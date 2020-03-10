@@ -12,6 +12,11 @@
     <artifactId>yu-security-demo</artifactId>
 
     <dependencies>
+        <!--<dependency>
+            <groupId>com.qq.weixin</groupId>
+            <artifactId>aes-jre</artifactId>
+            <version>1.6</version>
+        </dependency>-->
         <dependency>
             <groupId>com.yu.security</groupId>
             <artifactId>yu-security-browser</artifactId>

@@ -23,7 +23,7 @@ public class WeiXinOAuth2ServiceProvider extends AbstractOAuth2ServiceProvider<W
      */
     public WeiXinOAuth2ServiceProvider(String appId, String clientSecret) {
 
-        super(new OAuth2Template(appId, clientSecret, URL_AUTHORIZEURL, URL_ACCESS_TOKEN));
+        super(new WeiXinOAuth2Template(appId, clientSecret, URL_AUTHORIZEURL, URL_ACCESS_TOKEN));
         this.appId = appId;
     }
 

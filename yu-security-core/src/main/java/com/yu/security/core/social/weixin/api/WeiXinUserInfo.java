@@ -11,6 +11,16 @@ import lombok.Data;
 public class WeiXinUserInfo {
 
     /**
+     * 状态码
+     */
+    private String errcode;
+
+    /**
+     * 错误信息
+     */
+    private String errmsg;
+
+    /**
      * 普通用户的标识，对当前开发者帐号唯一
      */
     private String openid;

@@ -2,7 +2,7 @@ package com.yu.security.core.social.weixin.config;
 
 import com.yu.security.core.properties.SecurityProperties;
 import com.yu.security.core.properties.WeiXinProperties;
-import com.yu.security.core.social.qq.connect.QQOAuth2ConnectionFactory;
+import com.yu.security.core.social.weixin.connect.WeiXinOAuth2ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,6 @@ public class WeiXinAutoConfig extends SocialAutoConfigurerAdapter {
 
         WeiXinProperties weixin = securityProperties.getSocial().getWeixin();
         log.info("ProviderId:{}, AppId:{} ,AppSecret: {}", weixin.getProviderId(), weixin.getAppId(), weixin.getAppSecret() );
-        return new QQOAuth2ConnectionFactory(weixin.getProviderId(), weixin.getAppId(), weixin.getAppSecret());
+        return new WeiXinOAuth2ConnectionFactory(weixin.getProviderId(), weixin.getAppId(), weixin.getAppSecret());
     }
 }

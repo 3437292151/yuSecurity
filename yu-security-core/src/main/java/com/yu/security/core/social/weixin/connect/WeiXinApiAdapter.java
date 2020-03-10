@@ -27,9 +27,9 @@ public class WeiXinApiAdapter implements ApiAdapter<WeiXin> {
     public void setConnectionValues(WeiXin api, ConnectionValues values) {
         WeiXinUserInfo userInfo = api.getUserInfo(openId);
         values.setDisplayName(userInfo.getNickname());
-        values.setImageUrl(userInfo.getFigureurl_qq_1());
+        values.setImageUrl(userInfo.getHeadimgurl());
         values.setProfileUrl(null);
-        values.setProviderUserId(userInfo.getOpenId());
+        values.setProviderUserId(userInfo.getOpenid());
     }
 
     @Override

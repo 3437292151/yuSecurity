@@ -42,7 +42,7 @@ public class WeiXinImpl extends AbstractOAuth2ApiBinding implements WeiXin {
         WeiXinUserInfo qqUserInfo = null;
         try {
             qqUserInfo = objectMapper.readValue(userInfoResult, WeiXinUserInfo.class);
-            qqUserInfo.setOpenId(openId);
+            qqUserInfo.setOpenid(openId);
         } catch (IOException e) {
             throw new RuntimeException("获取用户信息异常", e);
         }
