@@ -21,11 +21,11 @@ yu:
       #image:
         #urls: /api/user
     social:
-      filterProcessesUrl: /qqLogin
-      #qq:
-      #  appId: 101858876
-      #  appSecret: f0d7402da2b4ccbbf35abe073a347f7f
-      #  providerId: callBack
+      filterProcessesUrl: /login
+      qq:
+        appId: 101858876
+        appSecret: f0d7402da2b4ccbbf35abe073a347f7f
+        providerId: qq
       weixin:
         appId: wxa6748bb1ed65022e
         appSecret: f7d4745253a499f49e243c4673fe1d81

@@ -2,14 +2,18 @@ package com.yu.security.core.social.weixin.config;
 
 import com.yu.security.core.properties.SecurityProperties;
 import com.yu.security.core.properties.WeiXinProperties;
+import com.yu.security.core.social.YuConnectView;
 import com.yu.security.core.social.weixin.connect.WeiXinOAuth2ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.social.SocialAutoConfigurerAdapter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.social.connect.ConnectionFactory;
+import org.springframework.web.servlet.View;
 
 @Configuration
 @ConditionalOnProperty(prefix = "yu.security.social.weixin", name = "appId")
@@ -26,5 +30,11 @@ public class WeiXinAutoConfig extends SocialAutoConfigurerAdapter {
         WeiXinProperties weixin = securityProperties.getSocial().getWeixin();
         log.info("ProviderId:{}, AppId:{} ,AppSecret: {}", weixin.getProviderId(), weixin.getAppId(), weixin.getAppSecret() );
         return new WeiXinOAuth2ConnectionFactory(weixin.getProviderId(), weixin.getAppId(), weixin.getAppSecret());
+    }
+
+    @Bean({"connect/weixinConnected","connect/weixinConnect"})
+    @ConditionalOnMissingBean(name = "weixinConnectView")
+    public View weixinConnectView(){
+        return new YuConnectView();
     }
 }

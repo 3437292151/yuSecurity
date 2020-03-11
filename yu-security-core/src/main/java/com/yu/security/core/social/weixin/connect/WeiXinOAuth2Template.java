@@ -86,8 +86,7 @@ public class WeiXinOAuth2Template extends OAuth2Template {
     @Override
     public String buildAuthenticateUrl(OAuth2Parameters parameters) {
         String url = super.buildAuthenticateUrl(parameters);
-        url = url + "&appid="+clientId+"&scope=snsapi_base";
-        log.info("url: {}", url);
+        url = url + "&appid="+clientId+"&scope=snsapi_userinfo";
         return url;
     }
 

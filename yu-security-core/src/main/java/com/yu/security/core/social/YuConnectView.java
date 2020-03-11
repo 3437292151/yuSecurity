@@ -20,12 +20,11 @@ public class YuConnectView extends AbstractView {
 
     @Override
     protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Map<String, List<Connection>> connections = (Map<String, List<Connection>>)model.get("connectionMap");
-
-        Map<String, Boolean> result = new HashMap<>();
-        for (String key : connections.keySet()){
-            result.put(key, CollectionUtils.isNotEmpty(connections.get(key)));
+        response.setContentType("text/html;charset=UTF-8");
+        if (model.get("connection") == null) {
+            response.getWriter().write("<h3>解绑成功</h3>");
+        } else {
+            response.getWriter().write("<h3>绑定成功</h3>");
         }
-        response.getWriter().write("");
     }
 }
