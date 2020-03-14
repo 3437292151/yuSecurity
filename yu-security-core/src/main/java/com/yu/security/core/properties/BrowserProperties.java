@@ -18,4 +18,6 @@ public class BrowserProperties {
 
     private String signupUrl = "/signUp.html";
 
+    private SessionProperties session = new SessionProperties();
+
 }

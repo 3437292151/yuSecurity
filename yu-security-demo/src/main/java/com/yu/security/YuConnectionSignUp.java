@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @Date 2020/3/8 0008
  * @Description 注册连接点
  */
-@Component
+//@Component
 public class YuConnectionSignUp implements ConnectionSignUp {
 
     private Logger log = LoggerFactory.getLogger(getClass());

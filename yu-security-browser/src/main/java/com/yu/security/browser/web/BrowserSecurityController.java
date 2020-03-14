@@ -66,4 +66,10 @@ public class BrowserSecurityController {
         userInfo.setHeadimg(connection.getImageUrl());
         return ResponseEntity.ok(userInfo);
     }
+
+    @GetMapping("/session/invalid")
+    public ResponseEntity<String> sessionInvalid(){
+        log.info("sessionInvalid()：/session/invalid");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("session 失效！");
+    }
 }

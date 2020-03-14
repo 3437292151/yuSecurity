@@ -58,4 +58,8 @@ public interface SecurityConstants {
      */
     public static  final String VALIDATE_CODE_SENDER_SUFFIX= "CodeSender";
 
+    /**
+     * session失效默认的跳转地址
+     */
+    public static  final String DEFAULT_SESSION_INVALID_URL = "/session/invalid";
 }

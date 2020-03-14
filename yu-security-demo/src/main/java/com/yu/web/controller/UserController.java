@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +37,12 @@ public class UserController {
     public void userRegist(HttpServletRequest request, UserDTO user){
         log.info("user: {}", user);
         providerSignInUtils.doPostSignUp(user.getUsername(), new ServletWebRequest(request));
+    }
+
+    @GetMapping("/me")
+    public UserDetails getUserDetails(@AuthenticationPrincipal UserDetails user){
+
+        return user;
     }
 
     @GetMapping
