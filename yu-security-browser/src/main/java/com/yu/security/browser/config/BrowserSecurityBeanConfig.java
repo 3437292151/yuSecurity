@@ -4,6 +4,7 @@
 package com.yu.security.browser.config;
 
 
+import com.yu.security.browser.logout.YuLogoutSuccessHandler;
 import com.yu.security.browser.session.YuInvalidSessionStrategy;
 import com.yu.security.browser.session.YuSessionInformationExpiredStrategy;
 import com.yu.security.core.properties.SecurityProperties;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 
@@ -34,6 +36,12 @@ public class BrowserSecurityBeanConfig {
 	@ConditionalOnMissingBean(SessionInformationExpiredStrategy.class)
 	public SessionInformationExpiredStrategy sessionInformationExpiredStrategy(){
 		return new YuSessionInformationExpiredStrategy(securityProperties.getBrowser().getSession().getSessionInvalidUrl());
+	}
+
+	@Bean
+	@ConditionalOnMissingBean(LogoutSuccessHandler.class)
+	public LogoutSuccessHandler logoutSuccessHandler(){
+		return new YuLogoutSuccessHandler(securityProperties.getBrowser().getSignOutUrl());
 	}
 	
 }

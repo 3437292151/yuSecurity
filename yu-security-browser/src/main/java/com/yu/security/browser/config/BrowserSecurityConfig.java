@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
@@ -53,6 +54,9 @@ public class BrowserSecurityConfig extends AbstractCoreSecurityConfig {
     @Autowired
     private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
 
+    @Autowired
+    private LogoutSuccessHandler logoutSuccessHandler;
+
     @Bean
     public PersistentTokenRepository persistentTokenRepository (){
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
@@ -89,6 +93,11 @@ public class BrowserSecurityConfig extends AbstractCoreSecurityConfig {
                 .expiredSessionStrategy(sessionInformationExpiredStrategy)//session过期后策略
                 .and()
                 .and()
+            .logout()
+                .logoutUrl("/signout")
+                .logoutSuccessHandler(logoutSuccessHandler)
+
+                .and()
             .authorizeRequests()
                 .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                         SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
@@ -96,6 +105,7 @@ public class BrowserSecurityConfig extends AbstractCoreSecurityConfig {
                        securityProperties.getBrowser().getSignupUrl(),
                        securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
                        securityProperties.getBrowser().getSession().getSessionInvalidUrl() + ".html",
+                       securityProperties.getBrowser().getSignOutUrl(),
                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
                         "/user/regist")
                 .permitAll()

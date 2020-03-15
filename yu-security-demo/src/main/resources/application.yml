@@ -8,9 +8,9 @@ spring:
     store-type: REDIS
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
-  #redis:
-  #  host: 192.168.1.109
-  #  *port: 6379
+  redis:
+    host: 192.168.100.229
+    password: cplh1234
 
 #security:
   #basic:
@@ -21,6 +21,7 @@ yu:
       loginPage: /demo-login.html
       loginType: JSON
       rememberMeSeconds: 60
+      signOutUrl: /demo-logout.html
     #code:
       #image:
         #urls: /api/user
