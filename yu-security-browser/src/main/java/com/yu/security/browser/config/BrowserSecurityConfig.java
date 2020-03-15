@@ -65,10 +65,7 @@ public class BrowserSecurityConfig extends AbstractCoreSecurityConfig {
         return tokenRepository;
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+
 
     @Override
     public void configure(HttpSecurity http) throws Exception {

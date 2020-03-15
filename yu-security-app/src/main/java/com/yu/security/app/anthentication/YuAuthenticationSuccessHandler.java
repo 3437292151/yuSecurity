@@ -1,4 +1,4 @@
-package com.yu.security.browser.anthentication;
+package com.yu.security.app.anthentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yu.security.core.properties.LoginType;
@@ -36,8 +36,13 @@ public class YuAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
                                         HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("登录成功！！");
 
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(objectMapper.writeValueAsString(authentication));
+        if (LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())){
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(objectMapper.writeValueAsString(authentication));
+            return;
+        }
+
+        super.onAuthenticationSuccess(request, response, authentication);
     }
 
 }

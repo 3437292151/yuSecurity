@@ -19,9 +19,14 @@
         </dependency>-->
         <dependency>
             <groupId>com.yu.security</groupId>
-            <artifactId>yu-security-browser</artifactId>
+            <artifactId>yu-security-app</artifactId>
             <version>${yu.security.version}</version>
         </dependency>
+        <!--<dependency>
+            <groupId>com.yu.security</groupId>
+            <artifactId>yu-security-browser</artifactId>
+            <version>${yu.security.version}</version>
+        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
