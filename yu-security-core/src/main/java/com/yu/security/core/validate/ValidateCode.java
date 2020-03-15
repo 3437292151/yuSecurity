@@ -2,6 +2,7 @@ package com.yu.security.core.validate;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
  * @Description: 验证码对象
  */
 @Data
-public class ValidateCode {
+public class ValidateCode implements Serializable {
 
     //验证码
     private String code;

@@ -6,6 +6,8 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.connect.web.HttpSessionSessionStrategy;
+import org.springframework.social.connect.web.SessionStrategy;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -22,9 +24,11 @@ public abstract  class AbstractValidateCodeProcessor<C extends ValidateCode> imp
 
     Logger log = LoggerFactory.getLogger(getClass());
 
+    private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
+
     @Override
     public void createCode(ServletWebRequest servletWebRequest) {
-        ValidateCode code = generate(servletWebRequest);
+        C code = generate(servletWebRequest);
 
         saveCode(servletWebRequest, code);
 
@@ -64,24 +68,26 @@ public abstract  class AbstractValidateCodeProcessor<C extends ValidateCode> imp
 
     }
 
-    private ValidateCodeType getValidateCodeType() {
+    protected ValidateCodeType getValidateCodeType() {
         String codeProcessor = StringUtils.substringBefore(getClass().getSimpleName(), SecurityConstants.VALIDATE_CODE_PROCESSOR_SUFFIX).toUpperCase();
         log.info("codeProcessor: {}" + codeProcessor);
         return ValidateCodeType.valueOf(codeProcessor);
     }
 
-    protected abstract void removeSessionCode(ServletWebRequest servletWebRequest, C codeInSession);
-
-    protected abstract C getSessionCode(ServletWebRequest servletWebRequest) throws ValidateCodeException;
-
-    private void send(ServletWebRequest servletWebRequest, ValidateCode code){
-        String validateType = getValidateCodeType().name().toLowerCase();
-        String senderName = validateType + SecurityConstants.VALIDATE_CODE_SENDER_SUFFIX;
-        ValidateCodeSender validateCodeSender = validateCodeSenderMap.get(senderName);
-        validateCodeSender.send(servletWebRequest, code);
+    protected void removeSessionCode(ServletWebRequest servletWebRequest, C codeInSession){
+        sessionStrategy.removeAttribute(servletWebRequest, getSessionKey());
     }
 
-    protected abstract void saveCode(ServletWebRequest servletWebRequest, ValidateCode code);
+    protected C getSessionCode(ServletWebRequest servletWebRequest) throws ValidateCodeException{
+        return (C) sessionStrategy.getAttribute(servletWebRequest, getSessionKey());
+    }
+
+    protected abstract void send(ServletWebRequest servletWebRequest, C code);
+
+    protected void saveCode(ServletWebRequest servletWebRequest, ValidateCode code){
+        ValidateCode validateCode = new ValidateCode(code.getCode(), code.getExpireTime());
+        sessionStrategy.setAttribute(servletWebRequest, getSessionKey(), validateCode);
+    }
 
     private C generate(ServletWebRequest request){
         String validateType = getValidateCodeType().getParamNameOnValidate();
@@ -93,5 +99,8 @@ public abstract  class AbstractValidateCodeProcessor<C extends ValidateCode> imp
         return (C) validateCodeGenerator.generate(request);
     }
 
+    protected String getSessionKey() {
+        return SESSION_KEY_PREFIX + StringUtils.substringBefore(getClass().getSimpleName(), SecurityConstants.VALIDATE_CODE_PROCESSOR_SUFFIX);
+    }
 
 }
