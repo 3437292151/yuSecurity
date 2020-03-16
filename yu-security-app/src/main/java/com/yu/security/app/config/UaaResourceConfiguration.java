@@ -4,6 +4,7 @@ import com.yu.security.app.anthentication.YuAuthenticationFailureHandler;
 import com.yu.security.app.anthentication.YuAuthenticationSuccessHandler;
 import com.yu.security.core.properties.SecurityConstants;
 import com.yu.security.core.properties.SecurityProperties;
+import com.yu.security.core.validate.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,6 +33,9 @@ public class UaaResourceConfiguration extends ResourceServerConfigurerAdapter {
     @Autowired
     private YuAuthenticationFailureHandler yuAuthenticationFailureHandler;
 
+    @Autowired
+    private ValidateCodeSecurityConfig validateCodeSecurityConfig;
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.formLogin()
@@ -39,8 +43,10 @@ public class UaaResourceConfiguration extends ResourceServerConfigurerAdapter {
                 .failureHandler(yuAuthenticationFailureHandler)
                 .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
                 .loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM);
-        http.apply(yuSpringSocialConfigurer)
+        http.apply(validateCodeSecurityConfig)
                 .and()
+             /*.apply(yuSpringSocialConfigurer)
+                .and()*/
                 .authorizeRequests()
                 .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                         SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,

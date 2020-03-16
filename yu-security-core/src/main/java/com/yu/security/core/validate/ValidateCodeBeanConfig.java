@@ -4,6 +4,7 @@ import com.yu.security.core.properties.SecurityProperties;
 import com.yu.security.core.validate.image.ImageCodeGenerator;
 import com.yu.security.core.validate.image.ImageCodeProcessor;
 import com.yu.security.core.validate.image.ImageCodeSender;
+import com.yu.security.core.validate.impl.SessionValidateCodeRepository;
 import com.yu.security.core.validate.sms.SmsCodeGenerator;
 import com.yu.security.core.validate.sms.SmsCodeProcessor;
 import com.yu.security.core.validate.sms.SmsCodeSender;
@@ -67,6 +68,12 @@ public class ValidateCodeBeanConfig {
     public ValidateCodeProcessor smsCodeProcessor(){
         SmsCodeProcessor smsCodeProcessor = new SmsCodeProcessor();
         return smsCodeProcessor;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(name = "validateCodeRepository")
+    public ValidateCodeRepository validateCodeRepository(){
+        return new SessionValidateCodeRepository();
     }
 
 }

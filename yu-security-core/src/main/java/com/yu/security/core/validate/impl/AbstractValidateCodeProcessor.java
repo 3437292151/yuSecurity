@@ -12,7 +12,9 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.UUID;
 
 public abstract  class AbstractValidateCodeProcessor<C extends ValidateCode> implements ValidateCodeProcessor {
 
@@ -24,7 +26,7 @@ public abstract  class AbstractValidateCodeProcessor<C extends ValidateCode> imp
 
     Logger log = LoggerFactory.getLogger(getClass());
 
-    private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
+
 
     @Autowired
     private ValidateCodeRepository validateCodeRepository;
@@ -71,29 +73,24 @@ public abstract  class AbstractValidateCodeProcessor<C extends ValidateCode> imp
 
     }
 
-    protected ValidateCodeType getValidateCodeType() {
+    private ValidateCodeType getValidateCodeType() {
         String codeProcessor = StringUtils.substringBefore(getClass().getSimpleName(), SecurityConstants.VALIDATE_CODE_PROCESSOR_SUFFIX).toUpperCase();
         log.info("codeProcessor: {}" + codeProcessor);
         return ValidateCodeType.valueOf(codeProcessor);
     }
 
     protected void removeSessionCode(ServletWebRequest servletWebRequest, C codeInSession){
-        sessionStrategy.removeAttribute(servletWebRequest, getSessionKey());
+        validateCodeRepository.remove(servletWebRequest, getValidateCodeType());
     }
 
     protected C getSessionCode(ServletWebRequest servletWebRequest) throws ValidateCodeException{
-        ValidateCodeType validateCodeType = getValidateCodeType();
-        String paramNameOnValidate = getValidateCodeType().getParamNameOnValidate();
-        validateCodeRepository.getValidate(servletWebRequest, validateCodeType);
-
-        return (C) sessionStrategy.getAttribute(servletWebRequest, getSessionKey());
+        return (C) validateCodeRepository.getValidate(servletWebRequest, getValidateCodeType());
     }
 
     protected abstract void send(ServletWebRequest servletWebRequest, C code);
 
     protected void saveCode(ServletWebRequest servletWebRequest, ValidateCode code){
-        ValidateCode validateCode = new ValidateCode(code.getCode(), code.getExpireTime());
-        sessionStrategy.setAttribute(servletWebRequest, getSessionKey(), validateCode);
+        validateCodeRepository.saveCode(servletWebRequest, code, getValidateCodeType());
     }
 
     private C generate(ServletWebRequest request){
@@ -104,10 +101,6 @@ public abstract  class AbstractValidateCodeProcessor<C extends ValidateCode> imp
             throw new ValidateCodeException("验证码生成器" + generatorName + "不存在");
         }
         return (C) validateCodeGenerator.generate(request);
-    }
-
-    protected String getSessionKey() {
-        return SESSION_KEY_PREFIX + StringUtils.substringBefore(getClass().getSimpleName(), SecurityConstants.VALIDATE_CODE_PROCESSOR_SUFFIX);
     }
 
 }
