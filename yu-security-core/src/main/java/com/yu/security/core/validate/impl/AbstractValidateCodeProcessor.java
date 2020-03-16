@@ -26,6 +26,9 @@ public abstract  class AbstractValidateCodeProcessor<C extends ValidateCode> imp
 
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 
+    @Autowired
+    private ValidateCodeRepository validateCodeRepository;
+
     @Override
     public void createCode(ServletWebRequest servletWebRequest) {
         C code = generate(servletWebRequest);
@@ -79,6 +82,10 @@ public abstract  class AbstractValidateCodeProcessor<C extends ValidateCode> imp
     }
 
     protected C getSessionCode(ServletWebRequest servletWebRequest) throws ValidateCodeException{
+        ValidateCodeType validateCodeType = getValidateCodeType();
+        String paramNameOnValidate = getValidateCodeType().getParamNameOnValidate();
+        validateCodeRepository.getValidate(servletWebRequest, validateCodeType);
+
         return (C) sessionStrategy.getAttribute(servletWebRequest, getSessionKey());
     }
 
