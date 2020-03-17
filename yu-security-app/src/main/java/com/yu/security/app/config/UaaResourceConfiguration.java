@@ -2,6 +2,7 @@ package com.yu.security.app.config;
 
 import com.yu.security.app.anthentication.YuAuthenticationFailureHandler;
 import com.yu.security.app.anthentication.YuAuthenticationSuccessHandler;
+import com.yu.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.yu.security.core.properties.SecurityConstants;
 import com.yu.security.core.properties.SecurityProperties;
 import com.yu.security.core.validate.ValidateCodeSecurityConfig;
@@ -36,6 +37,9 @@ public class UaaResourceConfiguration extends ResourceServerConfigurerAdapter {
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.formLogin()
@@ -45,9 +49,11 @@ public class UaaResourceConfiguration extends ResourceServerConfigurerAdapter {
                 .loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM);
         http.apply(validateCodeSecurityConfig)
                 .and()
-             /*.apply(yuSpringSocialConfigurer)
-                .and()*/
-                .authorizeRequests()
+             .apply(smsCodeAuthenticationSecurityConfig)
+                .and()
+             .apply(yuSpringSocialConfigurer)
+                .and()
+             .authorizeRequests()
                 .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                         SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
                         securityProperties.getBrowser().getLoginPage(),
@@ -60,7 +66,7 @@ public class UaaResourceConfiguration extends ResourceServerConfigurerAdapter {
                 .permitAll()
                 .anyRequest()
                 .authenticated()
-                .and()
+             .and()
                 .csrf().disable();
     }
 }
