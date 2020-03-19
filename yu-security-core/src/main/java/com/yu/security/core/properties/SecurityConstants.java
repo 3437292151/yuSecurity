@@ -27,6 +27,11 @@ public interface SecurityConstants {
     public static final String DEFAULT_LOGIN_PROCESSING_URL_MOBILE = "/authentication/mobile";
 
     /**
+     * 默认的app社交登录请求处理url
+     */
+    public static final String DEFAULT_LOGIN_PROCESSING_URL_OPENID = "/authentication/openId";
+
+    /**
      * @Author yuchanglong
      * @Date 2020-2-18
      * @Description 当请求需要身份认证时，默认跳转的url

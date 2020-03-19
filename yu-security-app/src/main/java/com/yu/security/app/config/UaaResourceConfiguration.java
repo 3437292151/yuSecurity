@@ -3,6 +3,7 @@ package com.yu.security.app.config;
 import com.yu.security.app.anthentication.YuAuthenticationFailureHandler;
 import com.yu.security.app.anthentication.YuAuthenticationSuccessHandler;
 import com.yu.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.yu.security.core.authentication.openid.OpenIdAuthenticationSecurityConfig;
 import com.yu.security.core.properties.SecurityConstants;
 import com.yu.security.core.properties.SecurityProperties;
 import com.yu.security.core.validate.ValidateCodeSecurityConfig;
@@ -40,6 +41,9 @@ public class UaaResourceConfiguration extends ResourceServerConfigurerAdapter {
     @Autowired
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
+    @Autowired
+    private OpenIdAuthenticationSecurityConfig openIdAuthenticationSecurityConfig;
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.formLogin()
@@ -51,11 +55,14 @@ public class UaaResourceConfiguration extends ResourceServerConfigurerAdapter {
                 .and()
              .apply(smsCodeAuthenticationSecurityConfig)
                 .and()
+             .apply(openIdAuthenticationSecurityConfig)
+                .and()
              .apply(yuSpringSocialConfigurer)
                 .and()
              .authorizeRequests()
                 .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                         SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
+                        SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_OPENID,
                         securityProperties.getBrowser().getLoginPage(),
                         securityProperties.getBrowser().getSignupUrl(),
                         securityProperties.getBrowser().getSession().getSessionInvalidUrl(),

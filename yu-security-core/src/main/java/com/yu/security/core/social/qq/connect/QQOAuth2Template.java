@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.social.oauth2.AccessGrant;
 import org.springframework.social.oauth2.OAuth2Template;
 import org.springframework.util.MultiValueMap;
@@ -29,6 +30,9 @@ public class QQOAuth2Template extends OAuth2Template {
     protected AccessGrant postForAccessGrant(String accessTokenUrl, MultiValueMap<String, String> parameters) {
         log.info("accessTokenUrl: {};parameters: {}", accessTokenUrl, parameters);
         String result = getRestTemplate().postForObject(accessTokenUrl, parameters, String.class);
+        if (StringUtils.contains(result, "\"error\"")){
+            throw new AuthenticationServiceException("code to access token error");
+        }
         log.info("result: {}", result);
         //access_token=FE04************************CCE2&expires_in=7776000&refresh_token=88E4************************BE14。
         String[] params = StringUtils.splitByWholeSeparator(result, "&");

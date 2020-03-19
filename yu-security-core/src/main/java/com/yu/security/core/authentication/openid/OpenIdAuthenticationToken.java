@@ -26,7 +26,7 @@ import java.util.Collection;
  * An {@link org.springframework.security.core.Authentication} implementation that is
  * designed for simple presentation of a username and password.
  * <p>
- * The <code>principal</code> and <code>credentials</code> should be set with an
+ * The <code>principal</code> and <code>providerId</code> should be set with an
  * <code>Object</code> that provides the respective property via its
  * <code>Object.toString()</code> method. The simplest such <code>Object</code> to use is
  * <code>String</code>.
@@ -40,8 +40,8 @@ public class OpenIdAuthenticationToken extends AbstractAuthenticationToken {
 	// ~ Instance fields
 	// ================================================================================================
 
-	private final String principal;
-	private String credentials;
+	private final String principal;//openid
+	private String providerId;//提供商
 
 	// ~ Constructors
 	// ===================================================================================================
@@ -52,9 +52,10 @@ public class OpenIdAuthenticationToken extends AbstractAuthenticationToken {
 	 * will return <code>false</code>.
 	 *
 	 */
-	public OpenIdAuthenticationToken(String mobile) {
+	public OpenIdAuthenticationToken(String openId, String providerId) {
 		super(null);
-		this.principal = mobile;
+		this.principal = openId;
+		this.providerId = providerId;
 		setAuthenticated(false);
 	}
 
@@ -66,17 +67,18 @@ public class OpenIdAuthenticationToken extends AbstractAuthenticationToken {
 	 *
 	 * @param authorities
 	 */
-	public OpenIdAuthenticationToken(String mobile, Collection<? extends GrantedAuthority> authorities) {
+	public OpenIdAuthenticationToken(String openId, String providerId, Collection<? extends GrantedAuthority> authorities) {
 		super(authorities);
-		this.principal = mobile;
+		this.principal = openId;
+		this.providerId = providerId;
 		super.setAuthenticated(true); // must use super, as we override
 	}
 
 	// ~ Methods
 	// ========================================================================================================
 
-	public Object getCredentials() {
-		return null;
+	public String getCredentials() {
+		return providerId;
 	}
 
 	public String getPrincipal() {

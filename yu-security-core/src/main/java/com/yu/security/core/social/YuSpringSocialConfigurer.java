@@ -11,6 +11,8 @@ public class YuSpringSocialConfigurer extends SpringSocialConfigurer {
 
     private String filterProcessesUrl;
 
+    private SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor;
+
     public YuSpringSocialConfigurer(String filterProcessesUrl) {
         this.filterProcessesUrl = filterProcessesUrl;
     }
@@ -19,8 +21,13 @@ public class YuSpringSocialConfigurer extends SpringSocialConfigurer {
         log.info("YuSpringSocialConfigurer ");
         SocialAuthenticationFilter filter = (SocialAuthenticationFilter) super.postProcess(object);
         filter.setFilterProcessesUrl(filterProcessesUrl);
+        if (socialAuthenticationFilterPostProcessor != null){
+            socialAuthenticationFilterPostProcessor.processor(filter);
+        }
         return (T) filter;
     }
 
-
+    public void setSocialAuthenticationFilterPostProcessor(SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor) {
+        this.socialAuthenticationFilterPostProcessor = socialAuthenticationFilterPostProcessor;
+    }
 }

@@ -9,6 +9,7 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,6 +27,9 @@ public class OpenIdAuthenticationSecurityConfig extends SecurityConfigurerAdapte
     @Autowired
     private AuthenticationSuccessHandler authenticationSuccessHandler;
 
+    @Autowired
+    private UsersConnectionRepository usersConnectionRepository;
+
     @Override
     public void configure(HttpSecurity http) {
 
@@ -36,6 +40,8 @@ public class OpenIdAuthenticationSecurityConfig extends SecurityConfigurerAdapte
 
         OpenIdAuthenticationProvider openIdAuthenticationProvider = new OpenIdAuthenticationProvider();
         openIdAuthenticationProvider.setUserDetailsService(userDetailsService);
+
+        openIdAuthenticationProvider.setUsersConnectionRepository(usersConnectionRepository);
 
         http.addFilterAfter(openIdAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).authenticationProvider(openIdAuthenticationProvider);
     }

@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
  * <p>
  * Login forms must present two parameters to this filter: a username and password. The
  * default parameter names to use are contained in the static fields
- * {@link #YU_FORM_MOBILE_KEY}  The parameter names can also be changed by
+ * {@link #YU_FORM_OPENID_KEY}  The parameter names can also be changed by
  * setting the {@code mobileParameter} properties.
  * <p>
  * This filter by default responds to the URL {@code /login}.
@@ -48,16 +48,18 @@ public class OpenIdAuthenticationFilter extends
 	// ~ Static fields/initializers
 	// =====================================================================================
 
-	public static final String YU_FORM_MOBILE_KEY = "mobile";
+	public static final String YU_FORM_OPENID_KEY = "openId";
+	public static final String YU_FORM_PROVIDERID_KEY = "providerId";
 
-	private String mobileParameter = YU_FORM_MOBILE_KEY;
+	private String openIdParameter = YU_FORM_OPENID_KEY;
+	private String providerIdParameter = YU_FORM_PROVIDERID_KEY;
 	private boolean postOnly = true;
 
 	// ~ Constructors
 	// ===================================================================================================
 
 	public OpenIdAuthenticationFilter() {
-		super(new AntPathRequestMatcher(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE, "POST"));
+		super(new AntPathRequestMatcher(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_OPENID, "POST"));
 	}
 
 	// ~ Methods
@@ -70,16 +72,21 @@ public class OpenIdAuthenticationFilter extends
 					"Authentication method not supported: " + request.getMethod());
 		}
 
-		String mobile = obtainMobile(request);
+		String openId = obtainOpenId(request);
+		String providerId = obtainProviderIdParameter(request);
 
-		if (mobile == null) {
-			mobile = "";
+		if (openId == null) {
+			openId = "";
 		}
 
-		mobile = mobile.trim();
+		if (providerId == null){
+			providerId = "";
+		}
+
+		openId = openId.trim();
 
 		OpenIdAuthenticationToken authRequest = new OpenIdAuthenticationToken(
-				mobile);
+				openId, providerId);
 
 		// Allow subclasses to set the "details" property
 		setDetails(request, authRequest);
@@ -96,9 +103,29 @@ public class OpenIdAuthenticationFilter extends
 	 * @return the username that will be presented in the <code>Authentication</code>
 	 * request token to the <code>AuthenticationManager</code>
 	 */
-	protected String obtainMobile(HttpServletRequest request) {
-		return request.getParameter(mobileParameter);
+	protected String obtainOpenId(HttpServletRequest request) {
+		return request.getParameter(openIdParameter);
 	}
+
+	/**
+	 * Enables subclasses to override the composition of the password, such as by
+	 * including additional values and a separator.
+	 * <p>
+	 * This might be used for example if a postcode/zipcode was required in addition to
+	 * the password. A delimiter such as a pipe (|) should be used to separate the
+	 * password and extended value(s). The <code>AuthenticationDao</code> will need to
+	 * generate the expected password in a corresponding manner.
+	 * </p>
+	 *
+	 * @param request so that request attributes can be retrieved
+	 *
+	 * @return the password that will be presented in the <code>Authentication</code>
+	 * request token to the <code>AuthenticationManager</code>
+	 */
+	protected String obtainProviderIdParameter(HttpServletRequest request) {
+		return request.getParameter(providerIdParameter);
+	}
+
 
 	/**
 	 * Provided so that subclasses may configure what is put into the authentication
@@ -116,11 +143,11 @@ public class OpenIdAuthenticationFilter extends
 	 * Sets the parameter name which will be used to obtain the mobile from the login
 	 * request.
 	 *
-	 * @param mobileParameter the parameter name. Defaults to "mobile".
+	 * @param openIdParameter the parameter name. Defaults to "openId".
 	 */
-	public void setMobileParameter(String mobileParameter) {
-		Assert.hasText(mobileParameter, "mobile parameter must not be empty or null");
-		this.mobileParameter = mobileParameter;
+	public void setOpenIdParameter(String openIdParameter) {
+		Assert.hasText(openIdParameter, "openId parameter must not be empty or null");
+		this.openIdParameter = openIdParameter;
 	}
 
 	/**
@@ -136,8 +163,8 @@ public class OpenIdAuthenticationFilter extends
 		this.postOnly = postOnly;
 	}
 
-	public final String getMobileParameter() {
-		return mobileParameter;
+	public final String getOpenIdParameter() {
+		return openIdParameter;
 	}
 
 }
