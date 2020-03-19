@@ -3,6 +3,7 @@ package com.yu.web.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.yu.beans.dto.UserDTO;
 import com.yu.beans.dto.UserQueryCondition;
+import com.yu.security.app.social.AppSignUpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -30,13 +31,22 @@ import java.util.List;
 @Slf4j
 public class UserController {
 
-    @Autowired
+    /*@Autowired
     private ProviderSignInUtils providerSignInUtils;
 
     @PostMapping("/regist")
     public void userRegist(HttpServletRequest request, UserDTO user){
         log.info("user: {}", user);
         providerSignInUtils.doPostSignUp(user.getUsername(), new ServletWebRequest(request));
+    }*/
+
+    @Autowired
+    private AppSignUpUtils appSignUpUtils;
+
+    @PostMapping("/regist")
+    public void userRegist(HttpServletRequest request, UserDTO user){
+        log.info("user: {}", user);
+        appSignUpUtils.doPostSignUp(new ServletWebRequest(request), user.getUsername());
     }
 
     @GetMapping("/me")

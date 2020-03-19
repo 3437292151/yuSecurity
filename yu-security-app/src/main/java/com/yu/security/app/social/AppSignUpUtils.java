@@ -40,10 +40,8 @@ public class AppSignUpUtils {
      * @param connectionData
      */
     public void saveConnectionData(ServletWebRequest request, ConnectionData connectionData){
-        Connection<?> connection = connectionFactoryLocator
-                .getConnectionFactory(connectionData.getProviderId())
-                .createConnection(connectionData);
-        redisTemplate.opsForValue().set(getKey(request, BuildKyType.SAVE_TYPE), connection, 30, TimeUnit.MINUTES);
+
+        redisTemplate.opsForValue().set(getKey(request, BuildKyType.SAVE_TYPE), connectionData, 30, TimeUnit.MINUTES);
     }
 
     /**
@@ -56,7 +54,11 @@ public class AppSignUpUtils {
         if (!redisTemplate.hasKey(key)){
             throw new AppSecurityException("无法找到缓存中的社交用户信息");
         }
-        Connection<?> connection = (Connection<?>) redisTemplate.opsForValue().get(key);
+        ConnectionData connectionData = (ConnectionData) redisTemplate.opsForValue().get(key);
+
+        Connection<?> connection = connectionFactoryLocator
+                .getConnectionFactory(connectionData.getProviderId())
+                .createConnection(connectionData);
         usersConnectionRepository.createConnectionRepository(userId).addConnection(connection);
 
         redisTemplate.delete(key);

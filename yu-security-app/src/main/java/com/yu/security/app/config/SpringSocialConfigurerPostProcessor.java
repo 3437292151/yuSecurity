@@ -22,7 +22,7 @@ public class SpringSocialConfigurerPostProcessor implements BeanPostProcessor {
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (StringUtils.equals(beanName, "yuSpringSocialConfigurer")){
             YuSpringSocialConfigurer configurer = (YuSpringSocialConfigurer) bean;
-            configurer.signupUrl("social/signUp");
+            configurer.signupUrl("/social/signUp");
             return configurer;
         }
         return bean;

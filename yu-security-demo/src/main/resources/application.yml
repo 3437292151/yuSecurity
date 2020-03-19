@@ -5,7 +5,7 @@ spring:
     username: root
     password: 1qaz@WSX
   session:
-    store-type: REDIS
+    store-type: NONE
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
   redis:
@@ -35,10 +35,21 @@ yu:
         appId: wxa6748bb1ed65022e
         appSecret: f7d4745253a499f49e243c4673fe1d81
         providerId: weixin
+    oauth2:
+      client[0]:
+        clientId: yu
+        clientSecret: yusecret
+        accessTokenValiditySeconds: 3600
+        refreshTokenValiditySeconds: 10800
+      client[1]:
+        clientId: test
+        clientSecret: test
 server:
   port: 80
   session:
     timeout: 60
+
+
 security:
   oauth2:
     client:

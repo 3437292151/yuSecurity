@@ -69,7 +69,7 @@ public class UaaResourceConfiguration extends ResourceServerConfigurerAdapter {
                         securityProperties.getBrowser().getSession().getSessionInvalidUrl() + ".html",
                         securityProperties.getBrowser().getSignOutUrl(),
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
-                        "/user/regist")
+                        "/user/regist","/social/signUp")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
