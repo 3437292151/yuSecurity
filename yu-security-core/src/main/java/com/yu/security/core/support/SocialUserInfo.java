@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.yu.security.browser.support;
+package com.yu.security.core.support;
 
 import lombok.Data;
 

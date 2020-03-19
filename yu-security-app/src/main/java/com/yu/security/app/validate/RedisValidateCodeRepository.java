@@ -1,5 +1,6 @@
 package com.yu.security.app.validate;
 
+import com.yu.security.core.support.BuildKyType;
 import com.yu.security.core.validate.ValidateCode;
 import com.yu.security.core.validate.ValidateCodeException;
 import com.yu.security.core.validate.ValidateCodeRepository;
@@ -24,10 +25,6 @@ import java.util.concurrent.TimeUnit;
 public class RedisValidateCodeRepository implements ValidateCodeRepository {
 
     private Logger log = LoggerFactory.getLogger(getClass());
-
-    private enum BuildKyType{
-        SAVE_TYPE,NONE
-    }
 
     @Autowired
     private RedisTemplate<Object, Object> redisTemplate;

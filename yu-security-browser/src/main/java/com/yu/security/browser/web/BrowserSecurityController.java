@@ -1,6 +1,6 @@
 package com.yu.security.browser.web;
 
-import com.yu.security.browser.support.SocialUserInfo;
+import com.yu.security.core.support.SocialUserInfo;
 import com.yu.security.core.properties.SecurityProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
