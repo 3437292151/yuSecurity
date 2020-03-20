@@ -1,8 +1,6 @@
 package service.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
@@ -17,4 +15,7 @@ public class APIBusinessObjects {
 
     @XmlElement(name = "OBS")
     private OBS obs;
+
+    @XmlElement(name = "Project")
+    private Project project;
 }

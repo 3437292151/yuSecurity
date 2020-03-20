@@ -23,17 +23,14 @@ public class APIBusinessObjectsTest {
     public void test() throws Exception {
         //读取Resource目录下的XML文件
         Resource resource = new ClassPathResource("导出的P6计划(XML版) .xml");;
-        //利用输入流获取XML文件内容
-        BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream(), "UTF-8"));
-        StringBuffer buffer = new StringBuffer();
-        String line = "";
-        while ((line = br.readLine()) != null) {
-            buffer.append(line);
-        }
-        br.close();
-        //XML转为JAVA对象
-        APIBusinessObjects cityList = (APIBusinessObjects) XmlBuilder.xmlStrToObject(APIBusinessObjects.class, buffer.toString());
+        APIBusinessObjects cityList = (APIBusinessObjects) XmlBuilder.xmlToObject(APIBusinessObjects.class, resource.getInputStream());
        System.out.println(cityList);
+        System.out.println(cityList.getProject().getCalendar().getStandardWorkWeek());
+        System.out.println(cityList.getProject().getCalendar().getHolidayOrExceptions());
+        System.out.println(cityList.getProject().getWbs());
+        System.out.println(cityList.getProject().getActivity());
+        String xml = XmlBuilder.objectToXML(cityList);
+        System.out.println(xml);
     }
 
 }

@@ -2,24 +2,19 @@ package service.dto;
 
 import lombok.Data;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * @Author yuchl
- * @Date 2020/3/19 0019
- * @Description
- */
 @Data
 @XmlRootElement(namespace = "http://xmlns.oracle.com/Primavera/P6Professional/V8.3/API/BusinessObjects",
-        name = "OBS")
+        name = "WBS")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class OBS {
+public class WBS {
 
-    @XmlElement(name = "Description")
-    private String description;
-
-    @XmlElement(name = "GUID")
-    private String guId;
+    @XmlElement(name = "Code")
+    private String code;
 
     @XmlElement(name = "Name")
     private String name;
@@ -27,7 +22,6 @@ public class OBS {
     @XmlElement(name = "ObjectId")
     private String objectId;
 
-    @XmlElement( name = "ParentObjectId")
+    @XmlElement(name = "ParentObjectId")
     private String parentObjectId;
-
 }

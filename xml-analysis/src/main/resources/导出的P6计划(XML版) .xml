@@ -113,14 +113,14 @@
         <StandardWorkHours> 
           <DayOfWeek>Sunday</DayOfWeek>  
           <WorkTime> 
-            <Start>08:00:00</Start>  
-            <Finish>15:59:00</Finish> 
+            <Start>08:00:20</Start>
+            <Finish>15:59:10</Finish>
           </WorkTime> 
         </StandardWorkHours>  
         <StandardWorkHours> 
           <DayOfWeek>Monday</DayOfWeek>  
           <WorkTime> 
-            <Start>08:00:00</Start>  
+            <Start>08:00:10</Start>
             <Finish>15:59:00</Finish> 
           </WorkTime> 
         </StandardWorkHours>  
@@ -162,7 +162,7 @@
       </StandardWorkWeek>  
       <HolidayOrExceptions> 
         <HolidayOrException> 
-          <Date>2001-01-06T00:00:00</Date>  
+          <Date>2001-01-06T00:00:00</Date>
           <WorkTime xsi:nil="true"/> 
         </HolidayOrException>  
         <HolidayOrException> 
