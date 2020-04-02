@@ -36,6 +36,7 @@ yu:
         appSecret: f7d4745253a499f49e243c4673fe1d81
         providerId: weixin
     oauth2:
+      jwtSigningKey: jwt
       client[0]:
         clientId: yu
         clientSecret: yusecret
@@ -50,8 +51,9 @@ server:
     timeout: 60
 
 
-security:
-  oauth2:
-    client:
-      client-id: yu
-      client-secret: yusecret
+#security:
+#  oauth2:
+#    jwtSigningKey: jwt
+ #   client:
+ #     client-id: yu
+ #     client-secret: yusecret

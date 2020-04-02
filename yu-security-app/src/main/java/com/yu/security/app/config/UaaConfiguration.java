@@ -1,7 +1,6 @@
 package com.yu.security.app.config;
 
 import com.yu.security.core.properties.OAuth2ClientProperties;
-import com.yu.security.core.properties.OAuth2Properties;
 import com.yu.security.core.properties.SecurityProperties;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -16,6 +15,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 /**
  * @Author yuchl
@@ -38,11 +38,18 @@ public class UaaConfiguration extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private TokenStore redisTokenStore;
 
+    @Autowired(required = false)
+    private JwtAccessTokenConverter jwtAccessTokenConverter;
+
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager)
         .userDetailsService(userDetailsService)
         .tokenStore(redisTokenStore);
+
+        if (jwtAccessTokenConverter != null){
+            endpoints.accessTokenConverter(jwtAccessTokenConverter);
+        }
     }
 
     @Override

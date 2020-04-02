@@ -11,4 +11,6 @@ import lombok.Data;
 public class OAuth2Properties {
 
     private OAuth2ClientProperties client[] = {};
+
+    private String jwtSigningKey;
 }
